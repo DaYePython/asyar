@@ -1,4 +1,5 @@
 import enCatalog from '../../locales/en.json';
+import zhCNCatalog from '../../locales/zh-CN.json';
 import { getSystemLocale } from '../../lib/ipc/commands';
 
 function getNestedValue(obj: Record<string, any>, path: string): string | undefined {
@@ -36,6 +37,10 @@ export class I18nService {
   constructor(defaultLocale: string = 'en') {
     this.locale = defaultLocale;
     this.catalogs.set('en', enCatalog as Record<string, any>);
+    // Register under 'zh-CN' plus a 'zh' alias so plain 'zh', 'zh-Hans', 'zh-SG'
+    // system locales also resolve to Chinese via the candidate chain.
+    this.catalogs.set('zh-CN', zhCNCatalog as Record<string, any>);
+    this.catalogs.set('zh', zhCNCatalog as Record<string, any>);
   }
 
   registerCatalog(locale: string, catalog: Record<string, any>): void {
